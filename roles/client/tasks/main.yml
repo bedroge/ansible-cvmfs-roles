@@ -7,3 +7,11 @@
     name: cvmfs.roles/roles/cvmfs
   vars:
     cvmfs_role: client
+
+- name: Make local settings file for the CVMFS domain, containing the node architecture
+  ansible.builtin.copy:
+    dest: "/etc/cvmfs/domain.d/{{ cvmfs_server_urls[0].domain }}.local"
+    content: |
+      ARCH={{ node_features.cpu.isa }}/{{ node_features.cpu.uarch }}
+    mode: 0644
+
