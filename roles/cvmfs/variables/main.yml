@@ -18,26 +18,26 @@ cvmfs_service_ports:
   node_exporter: 9100
   cvmfs_exporter: 9101
 
-# Automatically configure CVMFS repos.
-cvmfs_repos_enabled: true
-
 # Email address for the project.
 cvmfs_email: hpc@rug.nl
+
+# Default cache settings
+cvmfs_quota_limit: 10000
+cvmfs_cache_base: /var/lib/cvmfs
+
+# Automatically configure CVMFS repos.
+rug_cvmfs_repos_enabled: true
 
 #
 # Defaults for the CVMFS repos.
 #
 
 # We do not use a config repo anymore.
-cvmfs_config_repo: {}
-
-# Default cache settings
-cvmfs_quota_limit: 10000
-cvmfs_cache_base: /var/lib/cvmfs
+rug_cvmfs_config_repo: {}
 
 # Public keys for the repositories, which you can find on the Stratum 0 at:
 # /etc/cvmfs/keys/*.pub
-cvmfs_keys:
+rug_cvmfs_keys:
   - path: /etc/cvmfs/keys/rug.nl/hpc.rug.nl.pub
     key: |
       -----BEGIN PUBLIC KEY-----
@@ -50,13 +50,13 @@ cvmfs_keys:
       OwIDAQAB
       -----END PUBLIC KEY-----
 # URLs for all the Stratum 1 servers.
-cvmfs_server_urls:
+rug_cvmfs_server_urls:
   - domain: rug.nl
     use_geoapi: true
     urls:
       - "http://195.169.22.138/cvmfs/@fqrn@"
 # Configuration of all the repositories.
-cvmfs_repositories:
+rug_cvmfs_repositories:
   - repository: hpc.rug.nl
     stratum0: 195.169.22.138
     owner: "{{ cvmfs_repo_owner | default('root') }}"
@@ -69,8 +69,8 @@ cvmfs_repositories:
 
 # Override all the Galaxy defaults by our defaults.
 # This is required, becase the galaxy_* variables are used inside the Ansible tasks.
-galaxy_cvmfs_config_repo: "{{ cvmfs_config_repo }}"
-galaxy_cvmfs_keys: "{{ cvmfs_keys }}"
-galaxy_cvmfs_server_urls: "{{ cvmfs_server_urls }}"
-galaxy_cvmfs_repositories: "{{ cvmfs_repositories }}"
-galaxy_cvmfs_repos_enabled: "{{ cvmfs_repos_enabled }}"
+galaxy_cvmfs_config_repo: "{{ rug_cvmfs_config_repo }}"
+galaxy_cvmfs_keys: "{{ rug_cvmfs_keys }}"
+galaxy_cvmfs_server_urls: "{{ rug_cvmfs_server_urls }}"
+galaxy_cvmfs_repositories: "{{ rug_cvmfs_repositories }}"
+galaxy_cvmfs_repos_enabled: "{{ rug_cvmfs_repos_enabled }}"
