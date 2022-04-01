@@ -47,7 +47,8 @@
     include_role:
       name: "cloudalchemy.grafana"
   when:
-    cvmfs_monitoring is true
+    - cvmfs_monitoring is true
+    - cvmfs_role.startswith('stratum')
 
 - name: Installing CVMFS
   include_role:
