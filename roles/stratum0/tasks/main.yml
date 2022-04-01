@@ -5,3 +5,5 @@
 
 - include_role: 
     name: cvmfs.roles/roles/cvmfs
+  vars:
+    cvmfs_role: stratum0
