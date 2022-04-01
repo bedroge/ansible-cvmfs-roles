@@ -67,10 +67,10 @@ cvmfs_repositories:
       - CVMFS_GARBAGE_COLLECTION=true
     client_options: []
 
-# Override all the Galaxy defaults by our EESSI defaults.
+# Override all the Galaxy defaults by our defaults.
 # This is required, becase the galaxy_* variables are used inside the Ansible tasks.
-#galaxy_cvmfs_config_repo: "{{ local_cvmfs_config_repo | default(eessi_cvmfs_config_repo) }}"
-#galaxy_cvmfs_keys: "{{ local_cvmfs_keys | default(eessi_cvmfs_keys) }}"
-#galaxy_cvmfs_server_urls: "{{ local_cvmfs_server_urls | default(eessi_cvmfs_server_urls) }}"
-#galaxy_cvmfs_repositories: "{{ local_cvmfs_repositories | default(eessi_cvmfs_repositories) }}"
-#galaxy_cvmfs_repos_enabled: "{{ local_cvmfs_repos_enabled | default(eessi_cvmfs_repos_enabled) }}"
+galaxy_cvmfs_config_repo: "{{ cvmfs_config_repo }}"
+galaxy_cvmfs_keys: "{{ cvmfs_keys }}"
+galaxy_cvmfs_server_urls: "{{ cvmfs_server_urls }}"
+galaxy_cvmfs_repositories: "{{ cvmfs_repositories }}"
+galaxy_cvmfs_repos_enabled: "{{ cvmfs_repos_enabled }}"
