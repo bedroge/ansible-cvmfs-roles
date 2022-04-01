@@ -22,7 +22,7 @@
   include_vars: "{{ cvmfs_include_path }}/monitoring.yml"
 
 - debug:
-    msg: "CVMFS repositories: {{ galaxy_cvmfs_repositories }}"
+    msg: "CVMFS repositories: {{ cvmfs_repositories }}"
 
 - debug:
     msg: "Monitoring: {{ cvmfs_monitoring }}. Public: {{ cvmfs_public }}. Grafana: {{ grafana_address }}"
