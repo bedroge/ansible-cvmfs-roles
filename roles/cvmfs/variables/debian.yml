@@ -1,0 +1,15 @@
+---
+# The package `cvmfs` is not strictly required for a stratum1,
+# but monitoring requires it so we install it anyway.
+cvmfs_packages:
+  stratum0:
+    - apache2
+    - cvmfs-server
+    - cvmfs-config-default
+    - cvmfs
+  stratum1:
+    - apache2
+    - libapache2-mod-wsgi
+    - squid
+    - cvmfs-server
+    - cvmfs-config-default

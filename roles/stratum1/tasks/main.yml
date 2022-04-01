@@ -1,0 +1,13 @@
+---
+- name: Set include path for stratum1
+  set_fact:
+    cvmfs_stratum1_include_path: "{{ role_path }}/variables"
+
+- name: Gather stratum1 variables
+  include_vars: "{{ cvmfs_stratum1_include_path }}/main.yml"
+
+- debug:
+   msg: "CVMFS role: {{ cvmfs_role }}"
+
+- include_role: 
+    name: cvmfs.roles/roles/cvmfs

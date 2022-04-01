@@ -1,0 +1,3 @@
+---
+cvmfs_squid_conf_src: "{{ local_stratum1_cvmfs_squid_conf_src | default('squid.conf.j2') }}"
+cvmfs_role: "stratum1"

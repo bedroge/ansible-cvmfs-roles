@@ -1,0 +1,76 @@
+---
+# Defaults for all CVMFS roles
+
+# Enable monitoring on nodes, defaults to true.
+# This will install grafana, prometheus, node_exporter, and cvmfs_exporter
+# on the monitored node.
+cvmfs_monitoring: true
+
+# Set the node as a public node. If the node is set as public the prometheus
+# instance will allow other prometheus instances to connect to scrape data.
+cvmfs_public: false
+
+# All services bind to localhost, unless cvmfs_public is set to
+# true, in that case grafana and prometheus binds to "*". 
+cvmfs_service_ports:
+  grafana: 3000
+  prometheus: 9090
+  node_exporter: 9100
+  cvmfs_exporter: 9101
+
+# Automatically configure CVMFS repos.
+cvmfs_repos_enabled: true
+
+# Email address for the project.
+cvmfs_email: hpc@rug.nl
+
+#
+# Defaults for the CVMFS repos.
+#
+
+# We do not use a config repo anymore.
+cvmfs_config_repo: {}
+
+# Default cache settings
+cvmfs_quota_limit: 10000
+cvmfs_cache_base: /var/lib/cvmfs
+
+# Public keys for the repositories, which you can find on the Stratum 0 at:
+# /etc/cvmfs/keys/*.pub
+cvmfs_keys:
+  - path: /etc/cvmfs/keys/rug.nl/hpc.rug.nl.pub
+    key: |
+      -----BEGIN PUBLIC KEY-----
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8mfFpbeq0Ppr+o7ltPoI
+      Bx+sXAwcpKzi2vCkMoKk/D1I18S2z6jTg5TnS20XMaFJjWcrfEMNoHrIuGjbI9GC
+      3ceAKDoCsqXf1qBOckyE0tFbQTLsZJDUFTwPB8LugPmevHx0vtGYDp0s75Nm4sj1
+      nP6qNLBnC8pUepjYGnYnK++ivJmNtOeOWJ9OJJUtTLNIDgM01UiNDx2NC5kQrqF/
+      ZeGpp8uH20ylGMHPdE8V0Mg9cKcXzaM9RxxjfUjYSaN25jpuGxcwVAQZUzTg74oB
+      hdZ/3zSyxLHjCnRnenqbnryKr6O2Gy57SIuOWUnmj9gUXIdLdrbyZVPwN/+Mq2ou
+      OwIDAQAB
+      -----END PUBLIC KEY-----
+# URLs for all the Stratum 1 servers.
+cvmfs_server_urls:
+  - domain: rug.nl
+    use_geoapi: true
+    urls:
+      - "http://195.169.22.138/cvmfs/@fqrn@"
+# Configuration of all the repositories.
+cvmfs_repositories:
+  - repository: hpc.rug.nl
+    stratum0: 195.169.22.138
+    owner: "{{ cvmfs_repo_owner | default('root') }}"
+    key_dir: /etc/cvmfs/keys/rug.nl
+    server_options:
+      - CVMFS_AUTO_GC=false
+      - CVMFS_AUTO_TAG_TIMESPAN="30 days ago"
+      - CVMFS_GARBAGE_COLLECTION=true
+    client_options: []
+
+# Override all the Galaxy defaults by our EESSI defaults.
+# This is required, becase the galaxy_* variables are used inside the Ansible tasks.
+#galaxy_cvmfs_config_repo: "{{ local_cvmfs_config_repo | default(eessi_cvmfs_config_repo) }}"
+#galaxy_cvmfs_keys: "{{ local_cvmfs_keys | default(eessi_cvmfs_keys) }}"
+#galaxy_cvmfs_server_urls: "{{ local_cvmfs_server_urls | default(eessi_cvmfs_server_urls) }}"
+#galaxy_cvmfs_repositories: "{{ local_cvmfs_repositories | default(eessi_cvmfs_repositories) }}"
+#galaxy_cvmfs_repos_enabled: "{{ local_cvmfs_repos_enabled | default(eessi_cvmfs_repos_enabled) }}"

@@ -1,0 +1,60 @@
+---
+- debug:
+    msg: "{{ role_path }}"
+
+- name: Set include path
+  set_fact:
+    cvmfs_include_path: "{{ role_path }}/variables"
+
+- name: Gather core variables
+  include_vars: "{{ cvmfs_include_path }}/main.yml"
+
+- name: Gather variables for each operating system
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ cvmfs_include_path }}/{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+    - "{{ cvmfs_include_path }}/{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
+    - "{{ cvmfs_include_path }}/{{ ansible_os_family | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
+    - "{{ cvmfs_include_path }}/{{ ansible_distribution | lower }}.yml"
+    - "{{ cvmfs_include_path }}/{{ ansible_os_family | lower }}.yml"
+
+- name: Gather monitoring variables
+  include_vars: "{{ cvmfs_include_path }}/monitoring.yml"
+
+- debug:
+    msg: "CVMFS repositories: {{ galaxy_cvmfs_repositories }}"
+
+- debug:
+    msg: "Monitoring: {{ cvmfs_monitoring }}. Public: {{ cvmfs_public }}. Grafana: {{ grafana_address }}"
+
+
+- name: Install EPEL if required
+  include_role:
+    name: geerlingguy.repo-epel
+  when: ansible_os_family == "RedHat" 
+
+- block:
+  - name: Installing prometheus
+    include_role:
+      name: "cloudalchemy.prometheus"
+  - name: Installing node_exporter
+    include_role:
+      name: "cloudalchemy.node_exporter"
+#  - name: Installing cvmfs_exporter
+#    include_role:
+#      name: "cvmfs.cvmfs_exporter"
+  - name: Installing grafana
+    include_role:
+      name: "cloudalchemy.grafana"
+  when:
+    cvmfs_monitoring is true
+
+- name: Installing CVMFS
+  include_role:
+    name: galaxyproject.cvmfs
+
+- name: Print grafana login password if monitoring is enabled
+  debug:
+    msg: "Grafana login password: {{ grafana_security.admin_password }}"
+  when:
+    cvmfs_monitoring is true

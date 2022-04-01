@@ -1,0 +1,7 @@
+---
+- name: Set include path for proxy
+  set_fact:
+    cvmfs_proxy_include_path: "{{ role_path }}/variables"
+
+- include_role: 
+    name: cvmfs.roles/roles/cvmfs

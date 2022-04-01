@@ -1,0 +1,43 @@
+---
+_prometheus_public: "*:{{ cvmfs_service_ports['prometheus'] }}"
+_prometheus_private: "127.0.0.1:{{ cvmfs_service_ports['prometheus'] }}"
+
+prometheus_web_listen_address: "{{ _prometheus_public if cvmfs_public is true else _prometheus_private }}"
+prometheus_targets:
+  node:
+  - targets:
+    # Node exporter
+    - "127.0.0.1:{{ cvmfs_service_ports['node_exporter'] }}"
+    # CVMFS exporter
+    - "127.0.0.1:{{ cvmfs_service_ports['cvmfs_exporter'] }}"
+    labels:
+      env: "{{ inventory_hostname }}"
+
+prometheus_scrape_configs:
+  - job_name: "node"
+    file_sd_configs:
+      - files:
+          # This line loads file created from `prometheus_targets`
+          - "{{ prometheus_config_dir }}/file_sd/node.yml"
+
+node_exporter_web_listen_address: "127.0.0.1:{{ cvmfs_service_ports['node_exporter'] }}"
+
+grafana_random_password: "{{ lookup('community.general.random_string', length=12, special='no') }}"
+grafana_address: "{{ '*' if cvmfs_public is true else '127.0.0.1' }}"
+grafana_port: "{{ cvmfs_service_ports['grafana'] }}"
+grafana_security:
+  admin_user: admin
+  admin_password: "{{ cvmfs_grafana_password | default(grafana_random_password) }}"
+
+grafana_datasources:
+  - name: prometheus
+    type: prometheus
+    access: proxy
+    url: "http://127.0.0.1:{{ cvmfs_service_ports['prometheus'] }}"
+    basicAuth: false
+
+grafana_dashboards:
+  # 1860 has issues, needs testing
+  - dashboard_id: 13978
+    revision_id: 1
+    datasource: prometheus
