@@ -58,4 +58,6 @@
   debug:
     msg: "Grafana login password: {{ grafana_security.admin_password }}"
   when:
-    cvmfs_monitoring is true
+    - cvmfs_monitoring is true
+    - cvmfs_role.startswith('stratum')
+
