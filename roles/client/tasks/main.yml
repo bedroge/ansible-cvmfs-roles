@@ -17,5 +17,5 @@
     owner: root
     group: root
     mode: 0444
-  with_items: "{{ cvmfs_server_urls | rejectattr('local_settings', 'undefined') }}"
+  with_items: "{{ rug_cvmfs_server_urls | rejectattr('local_settings', 'undefined') }}"
 
