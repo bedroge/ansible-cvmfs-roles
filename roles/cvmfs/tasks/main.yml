@@ -1,7 +1,4 @@
 ---
-- debug:
-    msg: "{{ role_path }}"
-
 - name: Set include path
   set_fact:
     cvmfs_include_path: "{{ role_path }}/variables"
@@ -18,22 +15,18 @@
     - "{{ cvmfs_include_path }}/{{ ansible_distribution | lower }}.yml"
     - "{{ cvmfs_include_path }}/{{ ansible_os_family | lower }}.yml"
 
-- name: Gather monitoring variables
-  include_vars: "{{ cvmfs_include_path }}/monitoring.yml"
-
-- debug:
-    msg: "CVMFS repositories: {{ galaxy_cvmfs_repositories }}"
-
-- debug:
-    msg: "Monitoring: {{ cvmfs_monitoring }}. Public: {{ cvmfs_public }}. Grafana: {{ grafana_address }}"
-
-
-- name: Install EPEL if required
-  include_role:
-    name: geerlingguy.repo-epel
-  when: ansible_os_family == "RedHat" 
-
 - block:
+  - name: Gather monitoring variables
+    include_vars: "{{ cvmfs_include_path }}/monitoring.yml"
+
+  - debug:
+      msg: "Monitoring: {{ cvmfs_monitoring }}. Public: {{ cvmfs_public }}. Grafana: {{ grafana_address }}"
+
+  - name: Install EPEL if required
+    include_role:
+      name: geerlingguy.repo-epel
+    when: ansible_os_family == "RedHat" 
+
   - name: Installing prometheus
     include_role:
       name: "cloudalchemy.prometheus"
@@ -53,6 +46,7 @@
 - name: Installing CVMFS
   include_role:
     name: galaxyproject.cvmfs
+  become: true
 
 - name: Print grafana login password if monitoring is enabled
   debug:
