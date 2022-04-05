@@ -46,7 +46,6 @@
 - name: Installing CVMFS
   include_role:
     name: galaxyproject.cvmfs
-  become: true
 
 - name: Print grafana login password if monitoring is enabled
   debug:
