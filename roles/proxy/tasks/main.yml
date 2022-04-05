@@ -4,6 +4,6 @@
     cvmfs_proxy_include_path: "{{ role_path }}/variables"
 
 - include_role: 
-    name: cvmfs.roles/roles/cvmfs
+    name: "{{ role_path }}/../cvmfs"
   vars:
     cvmfs_role: localproxy

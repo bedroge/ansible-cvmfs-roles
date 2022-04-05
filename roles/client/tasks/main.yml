@@ -4,7 +4,7 @@
     cvmfs_clients_include_path: "{{ role_path }}/variables"
 
 - include_role: 
-    name: cvmfs.roles/roles/cvmfs
+    name: "{{ role_path }}/../cvmfs"
   vars:
     cvmfs_role: client
 
@@ -13,7 +13,7 @@
     content: "{{ item.local_settings }}"
     #content: |
     #  ARCH={{ node_features.cpu.isa }}/{{ node_features.cpu.uarch }}
-    dest: /etc/cvmfs/domain.d/{{ item.domain }}.conf
+    dest: /etc/cvmfs/domain.d/{{ item.domain }}.local
     owner: root
     group: root
     mode: 0444
