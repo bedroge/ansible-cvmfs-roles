@@ -56,7 +56,8 @@ rug_cvmfs_server_urls:
     urls:
       - "http://195.169.22.138/cvmfs/@fqrn@"
     local_settings: |
-      ARCH=x86_64/x86_64_v4
+      #ARCH=x86_64/x86_64_v3
+      ARCH={{ node_features.cpu.isa }}/{{ node_features.cpu.uarch }}
 # Configuration of all the repositories.
 rug_cvmfs_repositories:
   - repository: hpc.rug.nl
