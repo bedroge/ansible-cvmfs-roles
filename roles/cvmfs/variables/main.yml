@@ -55,6 +55,8 @@ rug_cvmfs_server_urls:
     use_geoapi: true
     urls:
       - "http://195.169.22.138/cvmfs/@fqrn@"
+    local_settings: |
+      ARCH=x86_64/x86_64_v4
 # Configuration of all the repositories.
 rug_cvmfs_repositories:
   - repository: hpc.rug.nl
