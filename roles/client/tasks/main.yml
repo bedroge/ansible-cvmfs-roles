@@ -5,8 +5,6 @@
 
 - include_role: 
     name: "{{ role_path }}/../cvmfs"
-  vars:
-    cvmfs_role: client
 
 - name: Make local settings file for the CVMFS domain, containing the node architecture
   ansible.builtin.copy:
