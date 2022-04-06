@@ -1,2 +1,6 @@
 ---
 cvmfs_role: "client"
+# Monitoring is currently not supported on clients, but
+# we should probably do something via 'cvmfs_config stat -v'
+# and offer to push that to a central db or somesuch.
+cvmfs_monitoring: false
